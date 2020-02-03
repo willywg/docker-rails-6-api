@@ -1,0 +1,30 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  # webpacker:
+  #   build: .
+  #   command: bash -c "/app/docker/webpacker_command_dev.sh"
+  #   env_file:
+  #     - ./environments
+  #   volumes:
+  #     - bundle_cache:/usr/local/bundle
+  #     - .:/app
+  #   ports:
+  #     - "3035:3035"
+  rails:
+    build: .
+    command: bash -c "/app/docker/rails_command_dev.sh"
+    volumes:
+      - bundle_cache:/usr/local/bundle
+      - .:/app
+    ports:
+      - "3000:3000"
+    # env_file:
+    #   - ./environments
+    depends_on:
+      - db
+volumes:
+  bundle_cache:
